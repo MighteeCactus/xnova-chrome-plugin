@@ -1,22 +1,16 @@
 {
   "manifest_version": 2,
 
-  "name": "One-click Kittens",
-  "description": "This extension demonstrates a browser action with kittens.",
-  "version": "1.0",
+  "name": "XNova bot",
+  "description": "This extension demonstrates the power of human above the machines",
+  "version": "0.1",
 
-  /*"permissions": [
-	"tabs",
-    "http://uni1.xnova-online.com/*"
-  ],*/
   "browser_action": {
-    "default_icon": "icon.png",
-    "default_popup": "popup.html"
+    "default_icon": "icon.png"
   },
   "content_scripts": [
     {
-      "matches": ["http://uni1.xnova-online.com/*"],
-	  
+      "matches": ["http://uni1.xnova-online.com/planet*"],
       "js": ["jquery-2.0.0.js", "jcookie.js", "jstorage.js", "myscript.js"]
     }
   ]
