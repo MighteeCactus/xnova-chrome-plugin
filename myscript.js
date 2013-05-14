@@ -17,19 +17,22 @@ var buildingCodes = {
 var parseXNFloat = function(str) {
     str = str.replace(".", "");
     return parseFloat(str);
-}
+};
 
 
 /**
  * Application
  */
 
+
+$('#main_container').css('margin-left', '25%');
+
 var queue = new BuildQueue({useSchedule: true});
 
 var panel = new ControlPanel();
 panel.showBuildings(queue.buildings);
-
+panel.showLogs(Logger.getLogs(), {order: 'descending'});
 
 queue.start();
 
-
+panel.showLogs(Logger.getLogs(), {order: 'descending'});

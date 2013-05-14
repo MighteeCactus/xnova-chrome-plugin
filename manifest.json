@@ -11,15 +11,18 @@
   "content_scripts": [
     {
       "matches": ["http://uni1.xnova-online.com/planet*"],
+      "css": ["styles.css"],
       "js": [
           "jquery-2.0.0.js",
           "jcookie.js",
           "jstorage.js",
+          "Logger.js",
           "Resources.js",
           "Building.js",
           "BuildQueue.js",
           "ControlPanel.js",
-          "myscript.js"]
+          "myscript.js"
+      ]
     }
   ]
 }

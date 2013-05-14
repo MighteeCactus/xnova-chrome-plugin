@@ -43,7 +43,7 @@ Building.prototype.canBuild = function(res) {
 
 Building.prototype.build = function() {
 
-    console.log(buildUrl + this.id.id);
+    Logger.log("Go to: " + buildUrl + this.id.id);
     location.href = buildUrl + this.id.id;
 
 };

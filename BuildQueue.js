@@ -49,11 +49,11 @@ BuildQueue.prototype.useScheduled = function() {
  */
 BuildQueue.prototype.currentQueueIsEmpty = function () {
     if ($('#queue_time').length > 0) {
-        console.log("Game queue is NOT empty");
+        Logger.log("Game queue is NOT empty");
         return false;
     }
 
-    console.log("Game queue is empty");
+    Logger.log("Game queue is empty");
     return true;
 };
 
@@ -74,20 +74,20 @@ BuildQueue.prototype._descheduleBuilding = function(index) {
  * Main chit of the plugin - handles building automatic queue
  */
 BuildQueue.prototype.start = function() {
-    console.log("Queue is about to start!");
+    Logger.log("Queue is about to start!");
 
     if (this.buildings.length == 0) {
-        console.log("Building queue is empty. Waiting for new orders imperor!");
+        Logger.log("Building queue is empty. Waiting for new orders imperor!");
     }
 
     if (!this.currentQueueIsEmpty()) {
-        console.log("Waiting...");
+        Logger.log("Waiting...");
         return;
     }
 
     //for (var i in this.buildings) {
     if (!this.buildings[0].canBuild(this.res)) {
-        console.log("Not enough minerals for " + this.buildings[0].id.label + "!");
+        Logger.log("Not enough minerals for " + this.buildings[0].id.label + "!");
 
         var min = 60000,
             max = 1200000;
@@ -95,18 +95,18 @@ BuildQueue.prototype.start = function() {
 
         setTimeout("location.href='" + this.planetUrl + "'", waitingTime);
 
-        console.log("Waiting for " + waitingTime/60000 + " minutes");
+        Logger.log("Waiting for " + parseInt(waitingTime/60000) + " minutes");
         return;
     }
 
-    console.log("start to build " + this.buildings[0].id.label);
+    Logger.log("start to build " + this.buildings[0].id.label);
 
     if (this.isScheduled) {
-        console.log("descheduled");
+        Logger.log("descheduled");
         this._descheduleBuilding(0);
     }
 
-    console.log("process building!");
+    Logger.log("process building!");
     this.buildings[0].build();
     return;
 
