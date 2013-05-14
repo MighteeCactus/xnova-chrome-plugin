@@ -26,6 +26,12 @@ var BuildQueue = function(params) {
 BuildQueue.prototype.add = function(id, time /*optional*/) {
     var building = new Building(id);
     this.buildings.push(building);
+
+    var buildings = [];
+    for(var i in this.buildings) {
+        buildings.push(this.buildings[i].id);
+    }
+    this.saveBuildings(buildings);
 };
 
 /**
@@ -67,8 +73,30 @@ BuildQueue.prototype._descheduleBuilding = function(index) {
         if (i == index) continue;
         schedule.push(this.buildings[i].id);
     }
-    localStorage.setItem('schedule', JSON.stringify(schedule));
+    this.saveBuildings(schedule);
+
+    //TODO убрать немедля как протесчу
+
 };
+
+BuildQueue.prototype.removeBuilding = function(index) {
+
+    var newBuildings = [];
+    for(var i in this.buildings) {
+        if (i == index) continue;
+        newBuildings.push(this.buildings[i]);
+    }
+
+    this._descheduleBuilding(index)
+    this.buildings = newBuildings;
+
+};
+
+BuildQueue.prototype.saveBuildings = function(buildings) {
+
+    localStorage.setItem('schedule', JSON.stringify(buildings));
+};
+
 
 /**
  * Main chit of the plugin - handles building automatic queue
@@ -78,6 +106,7 @@ BuildQueue.prototype.start = function() {
 
     if (this.buildings.length == 0) {
         Logger.log("Building queue is empty. Waiting for new orders imperor!");
+        return;
     }
 
     if (!this.currentQueueIsEmpty()) {
