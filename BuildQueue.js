@@ -3,7 +3,7 @@
  * Checks if building can be build and build it. Queue is stored in localStoragetgf
  */
 
-var BuildQueue = function() {
+var BuildQueue = function(params) {
     this.planetUrl = "/planet";
 
     this.res = new Resources();
@@ -11,6 +11,11 @@ var BuildQueue = function() {
     this.buildings = [];
 
     this.isScheduled = false;
+
+    params = params || {};
+    if (params.useSchedule) {
+        this.useScheduled();
+    }
 };
 
 /**

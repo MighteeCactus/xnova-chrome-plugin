@@ -20,26 +20,16 @@ var parseXNFloat = function(str) {
 }
 
 
-function controlPanel() {
-
-	$('body').append('<div id="chit" style="background-color:gray;border: 2px dashed pink;width:200px;height:200px;position:absolute;top:600px"></div>');
-	
-	$('#chit').append("<h3>Queue</h3>");
-	$('#chit').append("<ul></ul>");
-	
-
-}
-
-
 /**
  * Application
  */
 
-var queue = new BuildQueue();
-queue.useScheduled();
+var queue = new BuildQueue({useSchedule: true});
+
+var panel = new ControlPanel();
+panel.showBuildings(queue.buildings);
+
 
 queue.start();
 
-
-controlPanel();
 

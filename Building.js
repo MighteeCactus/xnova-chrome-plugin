@@ -47,3 +47,7 @@ Building.prototype.build = function() {
     location.href = buildUrl + this.id.id;
 
 };
+
+Building.prototype.getLabel = function() {
+    return this.id.label;
+};
