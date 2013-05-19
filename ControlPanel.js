@@ -32,7 +32,7 @@ ControlPanel.prototype.showBuildingsForm = function() {
 
         //TODO заменить вариантом получше
         queue.add(buildingCodes[name]);
-        self.showBuildings(queue.buildings);
+        self.showBuildings(queue.buildings[queue.planetLocation]);
 
         return;
     });
@@ -40,6 +40,7 @@ ControlPanel.prototype.showBuildingsForm = function() {
 
 ControlPanel.prototype.showBuildings = function(buildings) {
 
+    buildings = buildings || [];
     this.buildings.empty();
 
     if (buildings.length == 0) {

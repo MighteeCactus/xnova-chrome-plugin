@@ -46,26 +46,26 @@ BuildQueue.prototype.add = function(id, planetLocation) {
 BuildQueue.prototype._descheduleBuilding = function(index) {
 
     var schedule = [];
-    for(var i in this.buildings) {
+    for(var i in this.buildings[this.planetLocation]) {
         if (i == index) continue;
-        schedule.push(this.buildings[i].id);
+        schedule.push(this.buildings[this.planetLocation][i]);
     }
-    this.saveBuildings(schedule);
 
-    //TODO убрать немедля как протесчу
+    this.buildings[this.planetLocation] = schedule;
 
+    this.saveBuildings();
 };
 
 BuildQueue.prototype.removeBuilding = function(index) {
 
-    var newBuildings = [];
-    for(var i in this.buildings) {
+    /*var newBuildings = [];
+    for(var i in this.buildings[this.planetLocation]) {
         if (i == index) continue;
-        newBuildings.push(this.buildings[i]);
-    }
+        newBuildings.push(this.buildings[this.planetLocation][i]);
+    } */
 
-    this._descheduleBuilding(index)
-    //this.buildings = newBuildings;
+    this._descheduleBuilding(index);
+    //this.buildings[this.planetLocation] = newBuildings;
 
 };
 
@@ -86,6 +86,10 @@ BuildQueue.prototype.useScheduled = function() {
             this.add(schedule[i], planet);
         }
 
+    }
+
+    if (this.buildings[this.planetLocation] == undefined) {
+        this.buildings[this.planetLocation] = [];
     }
 };
 
@@ -132,8 +136,6 @@ BuildQueue.prototype.getPlanetLocation = function() {
 BuildQueue.prototype.start = function() {
     Logger.log("Queue is about to start!");
 
-    console.log(this.planetLocation);
-    console.log(this.buildings[this.planetLocation]);
     if (this.buildings[this.planetLocation].length == 0) {
         Logger.log("Building queue is empty. Waiting for new orders imperor!");
         return;
@@ -159,11 +161,13 @@ BuildQueue.prototype.start = function() {
 
     Logger.log("start to build " + this.buildings[this.planetLocation][0].id.label);
 
+    Logger.log("process building!");
+    this.buildings[this.planetLocation][0].build();
+
     if (this.isScheduled) {
-        Logger.log("descheduled");
+        Logger.log("descheduled item " + this.buildings[this.planetLocation][0]);
         this._descheduleBuilding(0);
     }
 
-    Logger.log("process building!");
-    //this.buildings[this.planetLocation][0].build();
+
 };

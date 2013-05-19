@@ -22,5 +22,7 @@ var buildingCodes = {
     laboratory:         {id: 31, label: "Исследовательская лаборатория"},
     metalHold:          {id: 22, label: "Хранилище металла"},
     crystalHold:        {id: 23, label: "Хранилище кристаллов"},
-    deuteriumHold:      {id: 24, label: "Хранилище дейтерия"}
+    deuteriumHold:      {id: 24, label: "Хранилище дейтерия"},
+    planecControl:      {id: 5, label: "Планетарный центр"},
+    allyFleetControl:    {id: 34, label: "Центр управления союзными флотами"}
 };
