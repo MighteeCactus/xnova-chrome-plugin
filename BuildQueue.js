@@ -87,9 +87,6 @@ BuildQueue.prototype.useScheduled = function() {
         }
 
     }
-
-    console.log("useSchedules buildings");
-    console.log(this.buildings[this.planetLocation]);
 };
 
 /**
@@ -117,10 +114,7 @@ BuildQueue.prototype.saveBuildings = function() {
         }
     }
 
-    //console.log("saveBuildings");
-    //console.log(ids);
-
-    //localStorage.setItem(Engine.scheduleName, JSON.stringify(ids));
+    localStorage.setItem(Engine.scheduleName, JSON.stringify(ids));
 };
 
 
