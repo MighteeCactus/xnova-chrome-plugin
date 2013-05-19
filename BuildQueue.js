@@ -12,13 +12,12 @@ var BuildQueue = function(params) {
 
     this.isScheduled = false;
 
+    this.planetLocation = this.getPlanetLocation();
+
     params = params || {};
     if (params.useSchedule) {
         this.useScheduled();
     }
-
-    this.planetLocation = this.getPlanetLocation();
-    this.buildings[this.planetLocation] = [];
 };
 
 
@@ -29,9 +28,6 @@ var BuildQueue = function(params) {
  */
 BuildQueue.prototype.add = function(id, planetLocation) {
 
-    console.log(id);
-    console.log(planetLocation);
-
     if (this.buildings[planetLocation] == undefined) {
         this.buildings[planetLocation] = [];
     }
@@ -39,7 +35,6 @@ BuildQueue.prototype.add = function(id, planetLocation) {
     planetLocation = planetLocation || this.planetLocation;
 
     var building = new Building(id);
-    console.log(this.buildings);
     this.buildings[planetLocation].push(building);
 
     this.saveBuildings();
@@ -94,7 +89,7 @@ BuildQueue.prototype.useScheduled = function() {
     }
 
     console.log("useSchedules buildings");
-    console.log(this.buildings);
+    console.log(this.buildings[this.planetLocation]);
 };
 
 /**
@@ -118,14 +113,14 @@ BuildQueue.prototype.saveBuildings = function() {
     for(var planet in this.buildings) {
         ids[planet] = [];
         for(var i in this.buildings[planet]) {
-            ids[planet].push(this.buildings[planet][i]);
+            ids[planet].push(this.buildings[planet][i].id);
         }
     }
 
-    console.log("saveBuildings");
-    console.log(ids);
+    //console.log("saveBuildings");
+    //console.log(ids);
 
-    localStorage.setItem(Engine.scheduleName, JSON.stringify(ids));
+    //localStorage.setItem(Engine.scheduleName, JSON.stringify(ids));
 };
 
 
@@ -143,6 +138,8 @@ BuildQueue.prototype.getPlanetLocation = function() {
 BuildQueue.prototype.start = function() {
     Logger.log("Queue is about to start!");
 
+    console.log(this.planetLocation);
+    console.log(this.buildings[this.planetLocation]);
     if (this.buildings[this.planetLocation].length == 0) {
         Logger.log("Building queue is empty. Waiting for new orders imperor!");
         return;
