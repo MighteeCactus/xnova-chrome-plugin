@@ -4,11 +4,11 @@
  */
 
 var BuildQueue = function(params) {
-    this.planetUrl = "/planet";
+    this.planetUrl = Engine.planetUrl;
 
     this.res = new Resources();
 
-    this.buildings = [];
+    this.buildings = {};
 
     this.isScheduled = false;
 
@@ -16,51 +16,33 @@ var BuildQueue = function(params) {
     if (params.useSchedule) {
         this.useScheduled();
     }
+
+    this.planetLocation = this.getPlanetLocation();
+    this.buildings[this.planetLocation] = [];
 };
+
+
 
 /**
  * Add building to queue
  * @param id
- * @param time
  */
-BuildQueue.prototype.add = function(id, time /*optional*/) {
+BuildQueue.prototype.add = function(id, planetLocation) {
+
+    console.log(id);
+    console.log(planetLocation);
+
+    if (this.buildings[planetLocation] == undefined) {
+        this.buildings[planetLocation] = [];
+    }
+
+    planetLocation = planetLocation || this.planetLocation;
+
     var building = new Building(id);
-    this.buildings.push(building);
+    console.log(this.buildings);
+    this.buildings[planetLocation].push(building);
 
-    var buildings = [];
-    for(var i in this.buildings) {
-        buildings.push(this.buildings[i].id);
-    }
-    this.saveBuildings(buildings);
-};
-
-/**
- * If building are scheduled in localStorage use this method
- */
-BuildQueue.prototype.useScheduled = function() {
-
-    this.isScheduled = true;
-
-    var schedule = localStorage.getItem('schedule');
-    schedule = JSON.parse(schedule);
-
-    for(var i in schedule) {
-        this.add(schedule[i]);
-    }
-};
-
-/**
- * Check if XNova is currently building anything
- * @return {boolean}
- */
-BuildQueue.prototype.currentQueueIsEmpty = function () {
-    if ($('#queue_time').length > 0) {
-        Logger.log("Game queue is NOT empty");
-        return false;
-    }
-
-    Logger.log("Game queue is empty");
-    return true;
+    this.saveBuildings();
 };
 
 /**
@@ -88,14 +70,71 @@ BuildQueue.prototype.removeBuilding = function(index) {
     }
 
     this._descheduleBuilding(index)
-    this.buildings = newBuildings;
+    //this.buildings = newBuildings;
 
 };
 
-BuildQueue.prototype.saveBuildings = function(buildings) {
+/**
+ * If building are scheduled in localStorage use this method
+ */
+BuildQueue.prototype.useScheduled = function() {
 
-    localStorage.setItem('schedule', JSON.stringify(buildings));
+    this.isScheduled = true;
+
+    var schedules = localStorage.getItem(Engine.scheduleName);
+    schedules = JSON.parse(schedules);
+
+    for (var planet in schedules) {
+
+        var schedule = schedules[planet];
+        for(var i in schedule) {
+            this.add(schedule[i], planet);
+        }
+
+    }
+
+    console.log("useSchedules buildings");
+    console.log(this.buildings);
 };
+
+/**
+ * Check if XNova is currently building anything
+ * @return {boolean}
+ */
+BuildQueue.prototype.currentQueueIsEmpty = function () {
+    if ($('#queue_time').length > 0) {
+        Logger.log("Game queue is NOT empty");
+        return false;
+    }
+
+    Logger.log("Game queue is empty");
+    return true;
+};
+
+BuildQueue.prototype.saveBuildings = function() {
+
+    var ids = {};
+
+    for(var planet in this.buildings) {
+        ids[planet] = [];
+        for(var i in this.buildings[planet]) {
+            ids[planet].push(this.buildings[planet][i]);
+        }
+    }
+
+    console.log("saveBuildings");
+    console.log(ids);
+
+    localStorage.setItem(Engine.scheduleName, JSON.stringify(ids));
+};
+
+
+BuildQueue.prototype.getPlanetLocation = function() {
+
+    return $('a[href="/galaxy"]', '#main_window').html();
+
+};
+
 
 
 /**
@@ -104,7 +143,7 @@ BuildQueue.prototype.saveBuildings = function(buildings) {
 BuildQueue.prototype.start = function() {
     Logger.log("Queue is about to start!");
 
-    if (this.buildings.length == 0) {
+    if (this.buildings[this.planetLocation].length == 0) {
         Logger.log("Building queue is empty. Waiting for new orders imperor!");
         return;
     }
@@ -114,9 +153,8 @@ BuildQueue.prototype.start = function() {
         return;
     }
 
-    //for (var i in this.buildings) {
-    if (!this.buildings[0].canBuild(this.res)) {
-        Logger.log("Not enough minerals for " + this.buildings[0].id.label + "!");
+    if (!this.buildings[this.planetLocation][0].canBuild(this.res)) {
+        Logger.log("Not enough minerals for " + this.buildings[this.planetLocation][0].id.label + "!");
 
         var min = 60000,
             max = 1200000;
@@ -128,7 +166,7 @@ BuildQueue.prototype.start = function() {
         return;
     }
 
-    Logger.log("start to build " + this.buildings[0].id.label);
+    Logger.log("start to build " + this.buildings[this.planetLocation][0].id.label);
 
     if (this.isScheduled) {
         Logger.log("descheduled");
@@ -136,8 +174,5 @@ BuildQueue.prototype.start = function() {
     }
 
     Logger.log("process building!");
-    this.buildings[0].build();
-    return;
-
-    //}
+    //this.buildings[this.planetLocation][0].build();
 };

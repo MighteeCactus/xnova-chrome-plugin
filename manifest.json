@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
 
-  "name": "XNova bot",
+  "name": "XNova bot 0.2",
   "description": "This extension demonstrates the power of human above the machines",
-  "version": "0.1",
+  "version": "0.2",
 
   "browser_action": {
     "default_icon": "icon.png"
@@ -17,6 +17,7 @@
           "jcookie.js",
           "jstorage.js",
           "Logger.js",
+          "Engine.js",
           "Resources.js",
           "Building.js",
           "BuildQueue.js",

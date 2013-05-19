@@ -12,8 +12,8 @@ var Resources = function() {
 };
 
 Resources.prototype.refresh = function () {
-    this.metal = parseXNFloat( $('#count_metal').html() );
-    this.crystal = parseXNFloat( $('#count_crystal').html() );
-    this.deuterium = parseXNFloat( $('#count_deuterium').html() );
-    this.energy = parseXNFloat( $('#energy span').html() );
+    this.metal = Engine.parseXNFloat( $('#count_metal').html() );
+    this.crystal = Engine.parseXNFloat( $('#count_crystal').html() );
+    this.deuterium = Engine.parseXNFloat( $('#count_deuterium').html() );
+    this.energy = Engine.parseXNFloat( $('#energy span').html() );
 };

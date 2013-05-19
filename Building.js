@@ -19,13 +19,13 @@ Building.prototype._getResources = function() {
     var container = $("a:contains('" + label + "')").closest('div').parent();
 
     this.metal = $("img[src*='metal']", container).next().html() || "0";
-    this.metal = parseXNFloat( this.metal );
+    this.metal = Engine.parseXNFloat( this.metal );
     this.crystal = $("img[src*='crystal']", container).next().html() || "0";
-    this.crystal = parseXNFloat( this.crystal );
+    this.crystal = Engine.parseXNFloat( this.crystal );
     this.deuterium = $("img[src*='deuterium']", container).next().html() || "0";
-    this.deuterium = parseXNFloat( this.deuterium );
+    this.deuterium = Engine.parseXNFloat( this.deuterium );
     this.energy = $("img[src*='energy']", container).next().html() || "0";
-    this.energy = parseXNFloat( this.energy );
+    this.energy = Engine.parseXNFloat( this.energy );
 };
 
 Building.prototype.canBuild = function(res) {
@@ -43,8 +43,8 @@ Building.prototype.canBuild = function(res) {
 
 Building.prototype.build = function() {
 
-    Logger.log("Go to: " + buildUrl + this.id.id);
-    location.href = buildUrl + this.id.id;
+    Logger.log("Go to: " + Engine.buildUrl + this.id.id);
+    location.href = Engine.buildUrl + this.id.id;
 
 };
 

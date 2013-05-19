@@ -50,9 +50,11 @@
 }
 
 .item-add {
+    display: block;
     cursor: pointer;
-    padding: 3px;
+    padding: 4px;
+    width: 60px;
     background-color: #303f5e;
     border:1px black;
-    margin: 3px;
+    margin-top: 5px;
 }
