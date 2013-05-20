@@ -8,6 +8,17 @@
   "browser_action": {
     "default_icon": "icon.png"
   },
+
+  "permissions": [
+    "tabs",
+    "bookmarks",
+    "background",
+    "http://uni1.xnova-online.com/"
+  ],
+
+  "background": {
+    "scripts": ["background.js"]
+  },
   "content_scripts": [
     {
       "matches": ["http://uni1.xnova-online.com/planet*"],
